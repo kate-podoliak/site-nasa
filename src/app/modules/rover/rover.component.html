@@ -1,0 +1,40 @@
+<h2 class="text-center mt-2">Marc Rover Photos: Image data gathered by NASA's Curiosity, <br> Opportunity, and Spirit rovers on Mars</h2>
+<p class="text-center mt-3">This API is designed to collect image data gathered by NASA's Curiosity, Opportunity, and Spirit rovers on Mars <br> and make it more easily available to other developers, educators, and citizen scientists. This API is maintained by <a href="https://github.com/chrisccerami/mars-photo-api">Chris Cerami.</a><br>
+  Each rover has its own set of photos stored in the database, which can be queried separately. <br> You can search by the Earth date on which a photo was taken.</p>
+
+<form class="p-fluid d-flex align-items-end justify-content-center" (ngSubmit)="onSubmit()">
+  <p-calendar placeholder="Select date" [(ngModel)]="date" name="calendar"
+    [dateFormat]="FORMAT_DATE_CALENDAR" [monthNavigator]="true" [yearNavigator]="true" [yearRange]="rangeYear"
+    [maxDate]="rangeDateEnd" class="mr-3" inputId="calendar">
+  </p-calendar>
+  <input type="submit" class="btn" value="Submit"/>
+</form>
+
+<!-- response -->
+<p-galleria [value]="images" [(visible)]="displayCustom" [(activeIndex)]="activeIndex"
+  [containerStyle]="{'max-width': '850px'}" [circular]="true" [fullScreen]="true"
+  [showItemNavigators]="true" [showThumbnails]="false" [baseZIndex]="100000">
+  <ng-template pTemplate="item" let-item>
+      <img [src]="item.previewImageSrc" class="d-block w-100" />
+  </ng-template>
+  <ng-template pTemplate="thumbnail" let-item>
+      <div class="p-grid p-nogutter p-justify-center">
+          <img [src]="item.thumbnailImageSrc" class="d-block" />
+      </div>
+  </ng-template>
+  <ng-template pTemplate="caption" let-item>
+    <h5>Rover - {{item.rover_name}} (status is {{item.rover_status}})</h5>
+    <p>Landing date: {{item.rover_landing}}. Launch date: {{item.rover_launch}}. Camera {{item.name}}</p>
+  </ng-template>
+</p-galleria>
+
+<div *ngIf="images" class="p-grid mt-3">
+  <div *ngFor="let image of images; let index = index;" class="p-col-3">
+    <img [src]="image.thumbnailImageSrc" [alt]="image.alt" (click)="imageClick(index)"/>
+  </div>
+</div>
+
+<!-- message -->
+<ng-container *ngIf="error && images?.length === 0">
+  <p class="message">{{ error }}</p>
+</ng-container>

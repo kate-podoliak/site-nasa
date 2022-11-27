@@ -1,0 +1,62 @@
+<h2 class="text-center mt-2">DONKI <br> (The Space Weather Database Of Notifications, Knowledge, Information)</h2>
+<p class="text-center mt-3">DONKI is a comprehensive on-line tool for space weather forecasters, scientists, and the general space science community. DONKI provides: chronicles the daily interpretations of space weather observations, analysis, models, forecasts, and notifications provided by the Space Weather Research Center (SWRC); comprehensive knowledge-base search functionality to support anomaly resolution and space science research; intelligent linkages, relationships, cause-and-effects between space weather activities; comprehensive webservice API access to information stored in DONKI. <br> Input the date period for searching the archive of space weather activity <span class="font-weight-bold">Coronal Mass Ejection (CME)</span>.</p>
+
+<form #form="ngForm" class="p-fluid d-flex align-items-end justify-content-center" (ngSubmit)="onSubmit()">
+  <p-calendar name="calendar" placeholder="Select two dates" [(ngModel)]="rangeDates" [yearRange]="rangeYear" class="mr-3" [dateFormat]="FORMAT_DATE_CALENDAR" [monthNavigator]="true" [yearNavigator]="true" [maxDate]="rangeDateEnd" [minDate]="rangeDateStart" selectionMode="range" [readonlyInput]="true" inputId="calendar"></p-calendar>
+  <input type="submit" class="btn" value="Submit"/>
+</form>
+
+<!-- response -->
+<div *ngIf="data && !error" class="d-flex flex-wrap justify-content-center my-2">
+  <div *ngFor="let item of data" class="response-donki col-12 my-2">
+    <div class="donki-head">
+      <h4>{{ item.startTime | date: 'yyyy-MM-dd h:mm' }}</h4>
+    </div>
+    <div class="donki-content">
+      <p>Catalog: {{item.catalog}}</p>
+      <p>All detecting instruments:
+        <ng-container *ngFor="let i of item.instruments">
+           {{i.displayName}}
+        </ng-container>
+      </p>
+      <p *ngIf="item.sourceLocation">Source location: {{item.sourceLocation}} ({{item.activeRegionNum}})</p>
+      <div *ngIf="item.cmeAnalyses" class="table-responsive mt-2">
+        <h5 class="text-center font-weight-bold">CME ANALYSIS</h5>
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th title="Data level based on how the measurements were derived. 0=real-time, 1=real-time and checked by supervising forecaster, 2=retrospective science level data analysis.">Data level</th>
+              <th title="Primary flag which is either True or False. If there are multiple CME analysis entries for a single CME, earlier measurements are marked as false when new or more accurate measurements are made. This is a helpful flag if you would like to download only one most accurate CME analysis per CME.">Prime</th>
+              <th>Long</th>
+              <th>Lat</th>
+              <th>Speed</th>
+              <th>Type</th>
+              <th>Half width</th>
+              <th>Time 21.5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let cme of item.cmeAnalyses">
+              <tr>
+                <td>{{cme.levelOfData}}</td>
+                <td>{{cme.isMostAccurate}}</td>
+                <td>{{cme.longitude}}</td>
+                <td>{{cme.latitude}}</td>
+                <td>{{cme.speed}}</td>
+                <td>{{cme.type}}</td>
+                <td>{{cme.halfAngle}}</td>
+                <td>{{cme.time21_5 | date: 'yyyy-MM-dd h:mm'}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-center font-italic mt-2">{{item.note}}</p>
+    </div>
+  </div>
+</div>
+
+<!-- error -->
+<div *ngIf="error">
+  <p class="message">{{ error }}</p>
+</div>

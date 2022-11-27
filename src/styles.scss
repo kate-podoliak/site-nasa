@@ -1,0 +1,46 @@
+@import '/src/assets/bootstrap.scss';
+
+@font-face {
+  font-family: Moon;
+  src: url("assets/fonts/Moon2.0-Regular.otf") format("opentype");
+}
+
+//@font-face {
+//  font-family: Moon;
+//  font-weight: bold;
+//  src: url("assets/fonts/Moon2.0-Bold.otf") format("opentype");
+//}
+
+html, body {
+    background-color: #fff;
+    color: #636b6f;
+    font-family: 'Moon', sans-serif;
+    letter-spacing: 2px;
+    font-weight: 200;
+    height: 100%;
+}
+
+h2 {
+  font-weight: bold;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  color: #ffffff;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background-color: #636b6f;
+  &:hover{
+    opacity: 0.6;
+  }
+}
+
+.message {
+  margin-top: 2%;
+  color: #c82333;
+  text-align: center;
+}
+
+::placeholder {
+  font-family: 'Moon', sans-serif;
+}

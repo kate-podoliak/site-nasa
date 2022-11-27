@@ -1,0 +1,58 @@
+<h2 class="text-center mt-2">NASA Image and Video Library</h2>
+<p class="text-center mt-3">The NASA library has a variety of images and videos. Input keywords to search for a publication (for example, Extravehicular activity).</p>
+
+<form #form="ngForm" (ngSubmit)="onSubmit()">
+  <div class="d-flex align-items-end justify-content-center">
+    <div class="p-input-icon-left mr-2 flex-grow-1">
+      <i class="pi pi-search"></i>
+      <input type="text" class="input-text" pInputText placeholder="Search" name="search" [(ngModel)]="input"/>
+    </div>
+    <input type="submit" class="btn" value="Submit"/>
+  </div>
+  <div class="p-field-checkbox pt-2">
+    <p-checkbox name="checkbox" value="image" [(ngModel)]="selectedTypes" inputId="img"></p-checkbox>
+    <label for="img" class="mb-0 mx-2">Images</label>
+    <p-checkbox name="checkbox" value="video" [(ngModel)]="selectedTypes" inputId="video"></p-checkbox>
+    <label for="video" class="mb-0 mx-2">Videos</label>
+  </div>
+</form>
+
+<!-- response -->
+<div *ngIf="data && !error">
+  <ng-container *ngFor="let obj of data.collection.items | keyvalue | paginate: { id: 'pagination', itemsPerPage: itemsPerPage, currentPage: page, totalItems: data.collection.items.length }">
+    <div *ngFor="let item of data.collection.items[obj.key | toString].data | keyvalue" class="d-flex flex-wrap my-5 my-md-3 response-library">
+      <div class="col-md-6 d-flex flex-wrap justify-content-center library-media" [ngSwitch]="data.collection.items[obj.key | toString].data[item.key | toString].media_type">
+        <ng-template ngSwitchCase="image">
+          <img [src]="data.collection.items[obj.key | toString].links[0].href"/>
+        </ng-template>
+        <ng-template ngSwitchCase="video">
+          <div class="embed-responsive embed-responsive-4by3">
+            <iframe [src]="data.collection.items[obj.key | toString].links[0].href | urlToVideoUrl" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </ng-template>
+      </div>
+      <div class="col-md-6 mt-1 library-text">
+        <div class="library-head">
+          <h4>{{data.collection.items[obj.key | toString].data[item.key | toString].title}}</h4>
+        </div>
+        <div class="library-content">
+          <p>NASA ID: {{data.collection.items[obj.key | toString].data[item.key | toString].nasa_id}}</p>
+          <p>Center: {{data.collection.items[obj.key | toString].data[item.key | toString].center}}</p>
+          <p>Date Created: {{data.collection.items[obj.key | toString].data[item.key | toString].date_created | date: FORMAT_DATE}}</p>
+          <p *ngIf="data.collection.items[obj.key | toString].data[item.key | toString].location">Location: {{data.collection.items[obj.key | toString].data[item.key | toString].location}}</p>
+          <p>Photographer: {{data.collection.items[obj.key | toString].data[item.key | toString].photographer}}</p>
+          <p class="text-description font-italic">{{data.collection.items[obj.key | toString].data[item.key | toString].description}}</p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<div *ngIf="data && data.collection.items.length > itemsPerPage" class="text-center py-4">
+  <pagination-controls id="pagination" [maxSize]="maxSize" [responsive]="true" (pageChange)="pageChanged($event)"></pagination-controls>
+</div>
+
+<!-- error -->
+<div *ngIf="error">
+  <p class="message">{{ error }}</p>
+</div>

@@ -1,0 +1,25 @@
+::ng-deep app-root {
+  height: 100%;
+  gap: 0px 0px;
+  display: grid;
+  align-items: flex-start;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr 50px;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+}
+
+app-header {
+  grid-area: header;
+}
+
+app-main {
+  grid-area: main;
+}
+
+app-footer {
+  grid-area: footer;
+  height: 100%;
+}

@@ -1,0 +1,10 @@
+<header class="text-center">
+  <h1 class="title">NASA API</h1>
+  <nav class="links">
+    <ul>
+      <li routerLinkActive="active" *ngFor="let l of links;">
+        <a routerLink="/{{l.link}}">{{l.title}}</a>
+      </li>
+    </ul>
+  </nav>
+</header>

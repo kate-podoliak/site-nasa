@@ -1,0 +1,40 @@
+<h2 class="text-center mt-2">Asteroids - NeoWs (Near Earth Object Web Service)</h2>
+<p class="text-center mt-3">NeoWs is a RESTful web service for near earth Asteroid information. <br> With NeoWs you can search for Asteroids based on their closest approach date to Earth.</p>
+
+<form #form="ngForm" class="p-fluid d-flex align-items-end justify-content-center" (ngSubmit)="onSubmit()">
+  <p-calendar name="calendar" placeholder="Select two dates" [(ngModel)]="rangeDates" [yearRange]="rangeYear" class="mr-3" [dateFormat]="FORMAT_DATE_CALENDAR" [monthNavigator]="true" [yearNavigator]="true" selectionMode="range" [readonlyInput]="true" inputId="range"></p-calendar>
+  <input type="submit" class="btn" value="Submit"/>
+</form>
+
+<!-- response -->
+<div *ngIf="data && !error">
+  <p class="text-center pt-3">Found {{data.element_count}} asteroids...</p>
+  <ng-container *ngFor="let obj of data.near_earth_objects | keyvalue">
+    <h3 class="text-center font-weight-bold pt-1 pb-3 underline">{{ obj.key }}</h3>
+    <div class="d-flex flex-wrap justify-content-center">
+      <div class="response-asteroid col-md-3 mr-sm-4 mb-4 mx-sm-0 mx-auto" *ngFor="let item of data.near_earth_objects[obj.key | toString]">
+        <div class="asteroid-head">
+          <h4><a href="{{item.nasa_jpl_url}}" target="_blank">{{ item.name }}</a></h4>
+        </div>
+        <div class="asteroid-content">
+          <p>Absolute magnitude {{item.absolute_magnitude_h}}</p>
+          <ng-container *ngFor="let i of item.close_approach_data">
+            <p>Body: {{i.orbiting_body}}</p>
+            <p>Close aproach date: {{ i.close_approach_date_full }}</p>
+            <p>V-relative (km/s): {{ i.relative_velocity.kilometers_per_second }}</p>
+            <p>Miss distance (km): {{i.miss_distance.kilometers }}</p>
+          </ng-container>
+          <p>Estimated diameter: ({{ item.estimated_diameter.kilometers.estimated_diameter_min | number:'1.1-2'}}, {{ item.estimated_diameter.kilometers.estimated_diameter_max | number:'1.1-2'}})</p>
+          <ng-container *ngIf="item.is_potentially_hazardous_asteroid">
+            <p class="asteroid-hazardous">It's potentially hazardous asteroid!</p>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<!-- error -->
+<div *ngIf="error">
+  <p class="message">The request failed! Check the entered data.<br>{{error}}</p>
+</div>

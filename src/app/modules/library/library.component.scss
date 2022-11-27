@@ -1,0 +1,46 @@
+.input-text {
+  width: 100%;
+}
+
+.library-text {
+  background-color: #e4e5e7;
+  border-radius: 5px;
+  box-shadow: 0 5px 5px -5px rgba(0, 0, 0, .5);
+  padding: 0;
+  overflow: hidden;
+
+  .library-head {
+    background-color: #636b6f;
+    color: #ffffff;
+    padding: 1px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    h4 {
+      margin: 0;
+      text-align: center;
+    }
+  }
+
+  .library-content {
+    padding: 10px;
+
+    p {
+      margin: 0;
+    }
+
+    .text-description {
+      margin-top: 5%;
+    }
+  }
+}
+
+.library-media img {
+  padding: 5px 0;
+  max-width: 95%;
+}
+
+.library-media iframe {
+  padding: 5px 0;
+}
