@@ -7,7 +7,6 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { ApodComponent } from './modules/apod/apod.component';
 import { AsteroidsComponent } from './modules/asteroids/asteroids.component';
-import { WeatherComponent } from './modules/weather/weather.component';
 import { RoverComponent } from './modules/rover/rover.component';
 import { LibraryComponent } from './modules/library/library.component';
 import { DonkiComponent } from './modules/donki/donki.component';
@@ -31,7 +30,6 @@ import { UrlToVideoUrlPipe } from "./core/pipes/urlToVideoUrl.pipe";
     FooterComponent,
     ApodComponent,
     AsteroidsComponent,
-    WeatherComponent,
     RoverComponent,
     LibraryComponent,
     DonkiComponent,
